@@ -16,9 +16,11 @@ with open('servidores.csv') as csv_file:
   for row in csv_reader:
     line_count += 1
     
-    if line_count >= 1:
+    # if line_count >= 1:
+    if line_count >= 10:
       np = path + "/{:03d}".format(line_count)
       print(np)
+      # if os.path.exists(np) and os.path.isdir(np) and not os.listdir(np):
       if os.path.exists(np) and os.path.isdir(np):
         os.removedirs(np)
       os.makedirs(np)
@@ -29,16 +31,16 @@ with open('servidores.csv') as csv_file:
       links["64"] = row[64].split(", ")
       for key in links.keys():
         count = 0
-        for link in links[key]:
+        # for link in links[key]:
+        for link in [i for i in links[key] if len(i) > 0]:
+
           count += 1
-          # file_name = np + "/" + key + "{:03d}".format(count)
-          
           file_id = link.split("id=")[1]
-          original_name = obj.FileInformation(file_id)
-          # file_name = np + "/" + key + " {:d}".format(count) + " " + original_name
-          file_name = key + " {:d}".format(count) + " " + original_name
-          obj.FileDownload(file_id, file_name)
-          shutil.move(r"./" + file_name, np + "/" + file_name)
-          print(file_name)  
+          if len(file_id) > 0:
+            original_name = obj.FileInformation(file_id)
+            file_name = key + " {:d}".format(count) + " " + original_name
+            obj.FileDownload(file_id, file_name)
+            shutil.move(r"./" + file_name, np + "/" + file_name)
+            print(file_name)  
         
     
