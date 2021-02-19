@@ -1,0 +1,7 @@
+__pycache__
+dados
+credentials.json
+servidores.csv
+token.pickle
+
+.DS_Store
